@@ -1,0 +1,48 @@
+<div class="card">
+	<div class="card-title text-center mt-4 mb-4"><h1>FRIENDS</h1></div>
+</div>
+
+<% if @added_friends.length==0 and @requested_friends.length==0%>
+	<div class="container">
+		<h1>Add Some Friends</h1>
+		<%= link_to "User Page" , root_path , class:"btn btn-secondary" %>
+	</div>
+<% else %>
+
+	<div class="container">
+		<table class="table mx-auto">
+			<thead class="table table-dark border-1">
+				<th>Name</th>
+				<th>Age</th>
+				<th colspan="4">Action</th>
+			</thead>
+			<tbody>
+				<% @added_friends.each do |friend| %>
+					<tr>
+						<td><%= friend.name %></td>
+						<td><%= friend.age %></td>
+						<td><%= link_to 'Chat' , messages_path(id: friend) , class:"btn btn-secondary"%></td>
+						<td><%= link_to 'Unfriend', friends_path(friend) , method: :delete , data: {
+							confirm: "Are you sure?"
+						} , class:"btn btn-danger"%></td>
+					</tr>
+				<% end %>
+				<% @requested_friends.each do |friend|  %>
+					<% unless @friends_email.include?friend.user.email %>
+						<tr>
+							<td><%= friend.user.name %></td>
+							<td><%= friend.user.age %></td>
+							<td><%= link_to 'Chat' , messages_path(id: friend)%></td>
+							<% if @friends_email.include?friend.user.email%>
+								<td>ADDED</td>
+							<% else %>
+								<td><%= link_to 'Add' ,new_friends_path(:add_friend => friend.user_id)%></td>
+							<% end %>
+						</tr>
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>	
+	</div>
+<% end %>
+<!-- new_friends_path(:add_friend => user) -->

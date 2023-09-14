@@ -1,0 +1,27 @@
+<div class="card">
+	<div class="card-title text-center mt-4 mb-4"><h1>USERS</h1></div>
+</div>
+<div class="container">
+	<table class="table mx-auto">
+		<thead class="table table-dark border-1">
+			<th>Name</th>
+			<th>Age</th>
+			<th colspan="4">Action</th>
+		</thead>
+		<tbody>
+			<% @users.each  do |user|%>
+				<% if current_user.email != user.email%>
+					<tr>
+						<td><%= user.name %></td>
+						<td><%= user.age %></td>
+						<% if @friends_email.include?user.email%>
+							<td>ADDED</td>
+						<% else %>
+							<td><%= link_to 'Add' ,new_friends_path(:add_friend => user) , class:"btn btn-primary"%></td>
+						<% end %>
+					</tr>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>	
+</div>

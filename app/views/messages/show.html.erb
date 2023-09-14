@@ -1,0 +1,40 @@
+<div class="card">
+	<div class="card-title text-center"><h1>
+		<% unless @friend.name == current_user.name%>
+			<%= @friend.name %> 
+		<% else %>
+			<%= @friend.user.name %>
+		<% end %>
+		</h1>
+	</div>	
+</div>
+
+<div class="card mx-5 mt-5 w-50 h-25 mx-auto">
+	<div class="card-body border-1 scroll">
+		<% @room.messages.each do |message|%>
+			<div class="mt-2 mx-5">
+				<% if message.user == current_user%>
+					<div class="float-end bg-success rounded-2 w-25 text-center"><%= message.content%>
+					</div>
+					<br>
+					<div class="fs-6 fw-light float-sm-end">you</div>
+					<br>
+				<%else%>
+					<div class="bg-info rounded-2 w-25 text-center"><%= message.content%>
+					</div>
+					<p class="fs-6 fw-light"><%= message.user.name%></p>
+				<% end %>
+			</div>
+		<% end %>
+	</div>
+
+	<%= form_with(model: @message) do |f|%>
+		<div class="d-flex">
+			<%= f.hidden_field :user_id ,value: current_user.id %>
+			<%= f.hidden_field :room_id ,value: @room.id %>
+			<%= f.text_field :content, placeholder: "Write your message..." ,class:"form-control w-75 border-2 border-dark rounded-0" %>
+			<%= f.submit "SEND" ,class:"btn btn-primary w-25 rounded-0" %>
+		</div>
+	<% end %>
+</div>
+
